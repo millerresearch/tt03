@@ -19,28 +19,39 @@ yaml_version: 3.0
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
   author:       "Richard Miller"      # Your name
-  title:        "7Seg Random Walk"      # Project title
+  title:        "7 Segment Random Walk"      # Project title
   language:     "Wokwi" # other examples include Verilog, Amaranth, VHDL, etc
   description:  "Random walk around the 7 segment display"      # Short description of what your project does
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Explain how your project works
+      Segments of the 7seg display are activated in a sequence controlled
+      by a finite state machine. The state is represented by 14 flipflops.
+      Each segment has two flipflops, one for each direction the walk is
+      moving. Where a segment has two possible successors, a mux selects
+      between them, controlled by the output from a linear feedback shift
+      register acting as a random number generator. The circuit is self
+      initialising so a reset signal isn't required: the number of true
+      flipfops is summed, and if the total isn't exactly 1 the state will
+      be initialised to have a single segment and direction active. A
+      clock divider is used to slow the walk to a visible speed.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-      Explain how to test your project
+      Use switches 5-8 (LSB is switch 8) to set a number N from 0 to 15;
+      the clock will be divided by 2^N. To test the clock, set switch 4 on
+      and the 7seg dot will flash at half the clock speed.
 
 # A description of what the inputs do
   inputs:               
     - clock
-    - reset
     - none
     - none
-    - none
-    - none
-    - none
-    - none
+    - enable flashing dot
+    - clock divisor bit 3 (MSB)
+    - clock divisor bit 2
+    - clock divisor bit 1
+    - clock divisor bit 0 (LSB)
 # A description of what the outputs do
   outputs:
     - segment a
